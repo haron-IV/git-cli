@@ -8,7 +8,7 @@
     "typescript": "^4.6.3"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && cp .env ./dist"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.20.0",
