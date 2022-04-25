@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const ps = require('prompt-sync')()
 import cliSelect from 'cli-select'
 import { exec } from 'child_process'

@@ -13,5 +13,3 @@ export const getCliSelectConfig = ({ values }: Values) => ({
   cleanup: true,
   indention: 2,
 })
-
-export const getProjects = () => process.env.PROJECTS?.split(',') || []
