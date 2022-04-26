@@ -1,8 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config({
-  path: `${process.cwd()}/.env`,
-})
-
 import { createBranch } from './src/commands'
 
 const git = () => {
