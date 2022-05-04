@@ -7,7 +7,7 @@ import { Colors } from '../types'
 import { getCliSelectConfig } from '../utils'
 import { settings } from './settings'
 import config from '../../.env'
-import { getStorage } from './storage'
+import { getStorage, saveStorage } from './storage'
 
 export const createBranch = async () => {
   console.log(Colors.FgBlue, `Configure your branch name.`)
@@ -26,7 +26,9 @@ export const createBranch = async () => {
     console.log()
     let taskNumber
     if (config.autoCountBranches) {
-      taskNumber = JSON.parse(getStorage()).branchCounter
+      taskNumber = String(
+        JSON.parse(getStorage())[project.split(' ')[0]].branchCounter
+      )
       console.log(`${Colors.FgGreen} task number (auto counter): ${taskNumber}`)
     } else {
       taskNumber = ps(`${Colors.FgGreen} task number (cab be skipped): `)
@@ -42,7 +44,7 @@ export const createBranch = async () => {
       .replace('[', '')
       .replace(']', '')}`
     const startingDash = `${taskNumber ? '-' : ''}`
-    const extendedBranchName = `${startingDash}${taskNumber.trim()}-${branchName
+    const extendedBranchName = `${startingDash}${taskNumber?.trim()}-${branchName
       .split(' ')
       .join('-')}`
     const mappedBranchName = `${branchPrefix}${extendedBranchName}`
@@ -54,8 +56,12 @@ export const createBranch = async () => {
       getCliSelectConfig({ type: 'agree', values: ['yes', 'no'] })
     )
 
-    if (agreed === 'yes') exec(`git checkout -b ${mappedBranchName}`)
-    else {
+    if (agreed === 'yes') {
+      exec(`git checkout -b ${mappedBranchName}`)
+      const storage = JSON.parse(getStorage())
+      storage[project.split(' ')[0]].branchCounter++
+      saveStorage(JSON.stringify(storage))
+    } else {
       console.log()
       console.log(`Branch wasn't created.`)
     }
