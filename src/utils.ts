@@ -13,3 +13,5 @@ export const getCliSelectConfig = ({ values }: Values) => ({
   cleanup: true,
   indention: 2,
 })
+
+export const getProjectName = (project: string) => project.split(' ')[0].trim()

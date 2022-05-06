@@ -1,3 +1,3 @@
 export default {
-  projects: [{ name: 'test-project', alias: 'tp' }],
+  projects: [{ name: 'git-cli', alias: 'gc', autoCountBranches: true }],
 }
