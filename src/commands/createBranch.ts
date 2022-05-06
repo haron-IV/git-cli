@@ -4,7 +4,7 @@ import cliSelect from 'cli-select'
 import { exec } from 'child_process'
 import { BRANCH_TYPES, PROJECTS } from '../config'
 import { Colors } from '../types'
-import { getCliSelectConfig } from '../utils'
+import { getCliSelectConfig, getProjectName } from '../utils'
 import { settings } from './settings'
 import config from '../../.env'
 import { getStorage, saveStorage } from './storage'
@@ -25,11 +25,17 @@ export const createBranch = async () => {
     const { value: project } = await cliSelect(getCliSelectConfig(PROJECTS))
     console.log()
     let taskNumber
-    if (config.autoCountBranches) {
+
+    if (
+      project &&
+      config.projects.find(({ name }) => name === getProjectName(project))
+        ?.autoCountBranches
+    ) {
       taskNumber = String(
         JSON.parse(getStorage())[project.split(' ')[0]].branchCounter
       )
       console.log(`${Colors.FgGreen} task number (auto counter): ${taskNumber}`)
+      console.log()
     } else {
       taskNumber = ps(`${Colors.FgGreen} task number (cab be skipped): `)
       console.log()
