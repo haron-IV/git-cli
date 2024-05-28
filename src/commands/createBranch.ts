@@ -4,21 +4,21 @@ import cliSelect from 'cli-select'
 import { exec } from 'child_process'
 import { BRANCH_TYPES, PROJECTS } from '../config'
 import { Colors } from '../types'
-import { getCliSelectConfig } from '../utils'
+import { getCliSelectConfig, log } from '../utils'
 
 export const createBranch = async () => {
-  console.log(Colors.FgBlue, `Configure your branch name.`)
-  console.log()
+  log(Colors.FgBlue, 'Configure your branch name.', true)
+  log(Colors.FgGreen, 'Select branch type:')
 
-  console.log(Colors.FgGreen, `Select branch type:`)
   const { value: branchType } = await cliSelect(
     getCliSelectConfig(BRANCH_TYPES)
   )
-  console.log()
-  console.log(Colors.FgGreen, `Select your project alias`)
+
+  log(Colors.FgGreen, 'Select your project alias')
+
   const { value: project } = await cliSelect(getCliSelectConfig(PROJECTS))
   console.log()
-  const taskNumber = ps(`${Colors.FgGreen} task number (cab be skipped): `)
+  const taskNumber = ps(`${Colors.FgGreen} task number (can be skipped): `)
   console.log()
   const branchName = ps(`${Colors.FgGreen} branch name: `)
   console.log()
@@ -32,10 +32,15 @@ export const createBranch = async () => {
   const extendedBranchName = `${startingDash}${taskNumber.trim()}-${branchName
     .split(' ')
     .join('-')}`
-  const mappedBranchName = `${branchPrefix}${extendedBranchName}`
+  const extendedBranchNameLastDashProtected =
+    extendedBranchName.slice(-1) === '-'
+      ? extendedBranchName.slice(0, -1)
+      : extendedBranchName
+  const mappedBranchName = `${branchPrefix}${extendedBranchNameLastDashProtected}`
 
-  console.log(
-    `${Colors.FgBlue} Branch with name "${mappedBranchName}" will be created. Do you agree?`
+  log(
+    Colors.FgBlue,
+    `Branch with name "${mappedBranchName}" will be created. Do you agree?`
   )
   const { value: agreed } = await await cliSelect(
     getCliSelectConfig({ type: 'agree', values: ['yes', 'no'] })

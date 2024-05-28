@@ -1,9 +1,16 @@
-import { createBranch } from './src/commands'
+import { SUPPORTED_FLAG_ACTIONS, SupportedFlag } from './src/utils'
 
-const git = () => {
-  //TODO:
-  // add to .zshrc if doesn't exit
-  createBranch()
+/*
+  Possible flags:
+  -b create the branch
+*/
+
+const flags = process.argv.slice(2) as SupportedFlag[]
+
+const gitCLI = () => {
+  flags.forEach((flag) => {
+    SUPPORTED_FLAG_ACTIONS[flag]()
+  })
 }
 
-git()
+gitCLI()

@@ -2,7 +2,7 @@ import config from '../.env'
 
 export const BRANCH_TYPES = {
   type: 'branch_types',
-  values: ['fix', 'feature'],
+  values: ['feature', 'fix', 'refactor', 'chore', 'test'],
 }
 
 export const PROJECTS = {
