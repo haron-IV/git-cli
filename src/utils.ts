@@ -1,4 +1,4 @@
-import { createBranch } from './commands'
+import { createBranch, deleteBranches } from './commands'
 import { Colors } from './types'
 
 type Values = {
@@ -24,8 +24,10 @@ export const log = (color: Colors, msg: string, spacing?: boolean) => {
 
 export enum SupportedFlag {
   CreateBranch = '-b',
+  DeleteBranches = '-r',
 }
 
 export const SUPPORTED_FLAG_ACTIONS: Record<SupportedFlag, () => {}> = {
   [SupportedFlag.CreateBranch]: createBranch,
+  [SupportedFlag.DeleteBranches]: deleteBranches,
 }

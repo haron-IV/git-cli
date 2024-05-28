@@ -1,4 +1,4 @@
-import config from '../.env'
+import config from '../env'
 
 export const BRANCH_TYPES = {
   type: 'branch_types',
