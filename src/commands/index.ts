@@ -1,2 +1,2 @@
 export { createBranch } from './createBranch'
-export { deleteBranches } from './deleteBranches'
+export { deleteBranches } from './deleteBranches/deleteBranches'

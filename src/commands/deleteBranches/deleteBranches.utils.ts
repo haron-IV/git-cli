@@ -1,15 +1,14 @@
-import { Colors } from '../types'
-import { Storage, getStorage, setStorage } from '../storage'
-import { getCliSelectConfig, getCurrentBranch, log } from '../utils'
+import { Colors } from '../../types'
 import { promisify } from 'util'
+import { getCliSelectConfig, getCurrentBranch, log } from '../../utils'
+import { getStorage, setStorage } from '../../storage'
 import cliSelect from 'cli-select'
-const prompt = require('prompt-sync')({ sigint: true })
-
+import { DeleteBranchesOptions } from 'config'
 const exec = promisify(require('child_process').exec)
 
 const WHITE_SPACE_REGEXP = /(\r\n|\n|\r)/gm
 
-const getFilteredBranches = async (
+export const getFilteredBranches = async (
   branchesWhitelist: Storage['deletingBranches']['whitelist'],
   currentBranchName: string
 ): Promise<string[]> => {
@@ -25,7 +24,7 @@ const getFilteredBranches = async (
     .filter((it: string) => it && it !== currentBranchName)
 }
 
-const removeBranches = async (filteredBranches: string[], currentBranchName: string) => {
+const deleteBranches = async (filteredBranches: string[], currentBranchName: string) => {
   console.log()
   log(Colors.FgYellow, `Number of branches that will be deleted (${filteredBranches.length}):`)
   console.log(filteredBranches)
@@ -80,45 +79,10 @@ const showStats = () => {
   log(Colors.FgYellow, `Deleted branches: ${s.deletingBranches.deletedBranchesCount}`)
 }
 
-export const deleteBranches = async () => {
-  const { deletingBranches } = getStorage()
-  const currentBranch = await getCurrentBranch()
-  const filteredBranches = await getFilteredBranches(deletingBranches.whitelist, currentBranch)
-
-  log(Colors.FgGreen, 'Select action you want to perform')
-  const { value } = await cliSelect(
-    getCliSelectConfig({
-      valueRenderer: (v) => v.replace(/-/g, ' '),
-      values: [
-        'delete-branches',
-        'add-current-branch-to-whitelist',
-        'add-to-whitelist',
-        'clear-whitelist',
-        'show-stats',
-      ],
-    })
-  )
-
-  switch (value) {
-    case 'delete-branches': {
-      await removeBranches(filteredBranches, currentBranch)
-      break
-    }
-    case 'add-to-whitelist': {
-      addToWhitelist()
-      break
-    }
-    case 'clear-whitelist': {
-      clearWhitelist()
-      break
-    }
-    case 'show-stats': {
-      showStats()
-      break
-    }
-    case 'add-current-branch-to-whitelist': {
-      await addCurrentBranchToWhitelist()
-      break
-    }
-  }
+export const functionalities = {
+  [DeleteBranchesOptions.DeleteBranches]: deleteBranches,
+  [DeleteBranchesOptions.AddCurrentBranchToWhitelist]: addCurrentBranchToWhitelist,
+  [DeleteBranchesOptions.AddToWhitelist]: addToWhitelist,
+  [DeleteBranchesOptions.ClearWhitelist]: clearWhitelist,
+  [DeleteBranchesOptions.ShowStatistics]: showStats,
 }

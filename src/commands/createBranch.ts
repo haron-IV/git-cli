@@ -6,6 +6,7 @@ import { BRANCH_TYPES, PROJECTS } from '../config'
 import { Colors } from '../types'
 import { getCliSelectConfig, log } from '../utils'
 
+//TODO: refactor
 export const createBranch = async () => {
   log(Colors.FgBlue, 'Configure your branch name.', true)
   log(Colors.FgGreen, 'Select branch type:')
