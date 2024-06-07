@@ -1,17 +1,21 @@
 import { createBranch, deleteBranches } from './commands'
 import { Colors } from './types'
+import { promisify } from 'util'
+
+const exec = promisify(require('child_process').exec)
 
 type Values = {
-  type: string
+  type?: string
   values: string[]
+  valueRenderer?: (value: string) => string
 }
 
-export const getCliSelectConfig = ({ values }: Values) => ({
+export const getCliSelectConfig = ({ values, valueRenderer }: Values) => ({
   values: values,
   defaultValue: 0,
   selected: '(x)',
   unselected: '( )',
-  valueRendered: (value: any) => value,
+  valueRenderer: (value: string) => valueRenderer?.(value) || value,
   outputStream: process.stdout,
   cleanup: true,
   indention: 2,
@@ -30,4 +34,15 @@ export enum SupportedFlag {
 export const SUPPORTED_FLAG_ACTIONS: Record<SupportedFlag, () => {}> = {
   [SupportedFlag.CreateBranch]: createBranch,
   [SupportedFlag.DeleteBranches]: deleteBranches,
+}
+
+export const getCurrentBranch = async (): Promise<string> => {
+  const git_branch = await exec('git branch')
+  if (git_branch.stderr) throw new Error(git_branch.stderr)
+
+  return git_branch.stdout
+    .split('\n')
+    .find((it: String) => it.includes('*'))
+    .replace('*', '')
+    .trim()
 }

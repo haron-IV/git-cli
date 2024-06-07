@@ -10,9 +10,7 @@ export const createBranch = async () => {
   log(Colors.FgBlue, 'Configure your branch name.', true)
   log(Colors.FgGreen, 'Select branch type:')
 
-  const { value: branchType } = await cliSelect(
-    getCliSelectConfig(BRANCH_TYPES)
-  )
+  const { value: branchType } = await cliSelect(getCliSelectConfig(BRANCH_TYPES))
 
   log(Colors.FgGreen, 'Select your project alias')
 
@@ -33,16 +31,11 @@ export const createBranch = async () => {
     .split(' ')
     .join('-')}`
   const extendedBranchNameLastDashProtected =
-    extendedBranchName.slice(-1) === '-'
-      ? extendedBranchName.slice(0, -1)
-      : extendedBranchName
+    extendedBranchName.slice(-1) === '-' ? extendedBranchName.slice(0, -1) : extendedBranchName
   const mappedBranchName = `${branchPrefix}${extendedBranchNameLastDashProtected}`
 
-  log(
-    Colors.FgBlue,
-    `Branch with name "${mappedBranchName}" will be created. Do you agree?`
-  )
-  const { value: agreed } = await await cliSelect(
+  log(Colors.FgBlue, `Branch with name "${mappedBranchName}" will be created. Do you agree?`)
+  const { value: agreed } = await cliSelect(
     getCliSelectConfig({ type: 'agree', values: ['yes', 'no'] })
   )
 
