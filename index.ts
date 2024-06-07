@@ -6,13 +6,16 @@ const flags = process.argv.slice(2) as SupportedFlag[]
 const gitCLI = () => {
   initStorage()
 
-  if (!flags.length)
+  const unsupportedFlag = !Object.values(SupportedFlag).includes(flags[0])
+  if (!flags.length || unsupportedFlag) {
     console.log(`
     HELP
     you have to run this CLI with specific flag:
     -b Create new branch
-    -r Delete multiple branches
+    -d Delete multiple branches
   `)
+    return
+  }
 
   flags.forEach((flag) => {
     SUPPORTED_FLAG_ACTIONS[flag]()

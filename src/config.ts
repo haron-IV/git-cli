@@ -13,7 +13,7 @@ export const PROJECTS = {
 
 export enum DeleteBranchesOptions {
   DeleteBranches = 'delete-branches',
-  addCurrentBranchToWhitelist = 'add-current-branch-to-whitelist',
+  AddCurrentBranchToWhitelist = 'add-current-branch-to-whitelist',
   AddToWhitelist = 'add-to-whitelist',
   ClearWhitelist = 'clear-whitelist',
   ShowStatistics = 'show-statistics',

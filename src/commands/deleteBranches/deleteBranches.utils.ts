@@ -1,9 +1,10 @@
-import { Colors } from '../../types'
 import { promisify } from 'util'
+import cliSelect from 'cli-select'
+import { Colors } from '../../types'
 import { getCliSelectConfig, getCurrentBranch, log } from '../../utils'
 import { getStorage, setStorage } from '../../storage'
-import cliSelect from 'cli-select'
-import { DeleteBranchesOptions } from 'config'
+import { DeleteBranchesOptions } from '../../config'
+
 const exec = promisify(require('child_process').exec)
 
 const WHITE_SPACE_REGEXP = /(\r\n|\n|\r)/gm

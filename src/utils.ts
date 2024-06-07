@@ -28,7 +28,7 @@ export const log = (color: Colors, msg: string, spacing?: boolean) => {
 
 export enum SupportedFlag {
   CreateBranch = '-b',
-  DeleteBranches = '-r',
+  DeleteBranches = '-d',
 }
 
 export const SUPPORTED_FLAG_ACTIONS: Record<SupportedFlag, () => {}> = {
