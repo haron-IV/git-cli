@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs'
-import config from '../../.env'
+import config from '../../env'
 
 const storageFilePath = `${process.cwd()}/storage/storage.json`
 const storageTemplateFilePath = `${process.cwd()}/storage/storage.template.json`
@@ -15,5 +15,4 @@ export const initStorage = () => {
 }
 
 export const getStorage = () => readFileSync(storageFilePath, 'utf8')
-export const saveStorage = (storage: string) =>
-  writeFileSync(storageFilePath, storage)
+export const saveStorage = (storage: string) => writeFileSync(storageFilePath, storage)

@@ -2,4 +2,6 @@ node_modules
 dist
 .env
 .env.ts
-/storage/storage.json
+.DS_Store
+
+storage.json
