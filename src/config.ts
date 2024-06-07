@@ -18,3 +18,8 @@ export enum DeleteBranchesOptions {
   ClearWhitelist = 'clear-whitelist',
   ShowStatistics = 'show-statistics',
 }
+
+export const SETTINGS_OPTIONS = {
+  type: 'settings_options',
+  values: ['reset branch counter'],
+}

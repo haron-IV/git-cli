@@ -5,6 +5,8 @@ import { getCliSelectConfig, getCurrentBranch, log } from '../../utils'
 import { getStorage, setStorage } from '../../storage'
 import { DeleteBranchesOptions } from '../../config'
 
+const prompt = require('prompt-sync')({ sigint: true })
+
 const exec = promisify(require('child_process').exec)
 
 const WHITE_SPACE_REGEXP = /(\r\n|\n|\r)/gm

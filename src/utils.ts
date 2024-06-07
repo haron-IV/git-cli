@@ -46,3 +46,5 @@ export const getCurrentBranch = async (): Promise<string> => {
     .replace('*', '')
     .trim()
 }
+
+export const getProjectName = (project: string) => project.split(' ')[0].trim()

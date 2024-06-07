@@ -4,7 +4,8 @@ import cliSelect from 'cli-select'
 import { exec } from 'child_process'
 import { BRANCH_TYPES, PROJECTS } from '../config'
 import { Colors } from '../types'
-import { getCliSelectConfig, log } from '../utils'
+import { getCliSelectConfig, getProjectName, log } from '../utils'
+import { getStorage, saveStorage } from './storage'
 
 //TODO: refactor
 export const createBranch = async () => {
@@ -41,8 +42,4 @@ export const createBranch = async () => {
   )
 
   if (agreed === 'yes') exec(`git checkout -b ${mappedBranchName}`)
-  else {
-    console.log()
-    console.log(`Branch wasn't created.`)
-  }
 }
