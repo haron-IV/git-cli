@@ -33,6 +33,11 @@ const deleteBranches = async (filteredBranches: string[], currentBranchName: str
   console.log(filteredBranches)
   console.log()
 
+  log(Colors.FgRed, 'Do you want to continue?')
+  const { value } = await cliSelect(getCliSelectConfig({ values: ['yes', 'no - exit'] }))
+
+  if (value === 'no - exit') return
+
   const deletedBranches = []
 
   for (const branchName of filteredBranches) {
@@ -70,7 +75,7 @@ const addCurrentBranchToWhitelist = async () => {
 const clearWhitelist = async () => {
   log(Colors.FgRed, 'Are you sure you want to remove all branches from whitelist?')
   const { value } = await cliSelect(getCliSelectConfig({ values: ['yes', 'no - exit'] }))
-  if (value === 'no') return
+  if (value === 'no - exit') return
   const s = getStorage()
   s.deletingBranches.whitelist = []
   setStorage(s)

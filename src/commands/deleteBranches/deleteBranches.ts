@@ -5,8 +5,6 @@ import { getCliSelectConfig, getCurrentBranch, log } from '../../utils'
 import { functionalities, getFilteredBranches } from './deleteBranches.utils'
 import { DeleteBranchesOptions } from '../../config'
 
-const prompt = require('prompt-sync')({ sigint: true })
-
 export const deleteBranches = async () => {
   const { deletingBranches } = getStorage()
   const currentBranch = await getCurrentBranch()

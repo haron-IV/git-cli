@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "v20.13.1"
+  },
   "dependencies": {
     "cli-select": "^1.1.2",
     "prompt-sync": "^4.2.0",
