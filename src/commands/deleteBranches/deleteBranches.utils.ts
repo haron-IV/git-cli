@@ -11,6 +11,12 @@ const exec = promisify(require('child_process').exec)
 
 const WHITE_SPACE_REGEXP = /(\r\n|\n|\r)/gm
 
+const showWhitelist = () => {
+  const s = getStorage()
+  log(Colors.FgWhite, 'Whitelist:')
+  console.log(s.deletingBranches.whitelist)
+}
+
 export const getFilteredBranches = async (
   branchesWhitelist: Storage['deletingBranches']['whitelist'],
   currentBranchName: string
@@ -64,12 +70,14 @@ const addToWhitelist = () => {
   const arrayOfBranches = branches?.split(',') || []
   s.deletingBranches.whitelist = [...arrayOfBranches, ...s.deletingBranches.whitelist]
   setStorage(s)
+  showWhitelist()
 }
 
 const addCurrentBranchToWhitelist = async () => {
   const s = getStorage()
   s.deletingBranches.whitelist = [await getCurrentBranch(), ...s.deletingBranches.whitelist]
   setStorage(s)
+  showWhitelist()
 }
 
 const clearWhitelist = async () => {
@@ -79,12 +87,14 @@ const clearWhitelist = async () => {
   const s = getStorage()
   s.deletingBranches.whitelist = []
   setStorage(s)
+  showWhitelist()
 }
 
 const showStats = () => {
   const s = getStorage()
   log(Colors.FgWhite, 'STATISTICS', true)
   log(Colors.FgYellow, `Deleted branches: ${s.deletingBranches.deletedBranchesCount}`)
+  showWhitelist()
 }
 
 export const functionalities = {
