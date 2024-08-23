@@ -48,3 +48,6 @@ export const getCurrentBranch = async (): Promise<string> => {
 }
 
 export const getProjectName = (project: string) => project.split(' ')[0].trim()
+
+export const removeLastChar = (charToRemove: string, string?: string) =>
+  string?.slice(-1) === charToRemove ? string?.slice(0, -1) : string

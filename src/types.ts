@@ -8,3 +8,12 @@ export enum Colors {
   FgCyan = '\x1b[36m',
   FgWhite = '\x1b[37m',
 }
+
+export interface BranchNameTemplateParams {
+  type: string
+  projectAlias: string
+  issueID: string
+  /** additional branch name applied after issueID */
+  branchName?: string
+  lastName?: string
+}

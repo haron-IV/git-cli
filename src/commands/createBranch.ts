@@ -2,15 +2,22 @@
 const ps = require('prompt-sync')()
 import cliSelect from 'cli-select'
 import { exec } from 'child_process'
-import { BRANCH_TYPES, PROJECTS } from '../config'
+import { BRANCH_NAME_TEMPLATES, BRANCH_TEMPLATES, BRANCH_TYPES, PROJECTS } from '../config'
 import { Colors } from '../types'
 import { getCliSelectConfig, log } from '../utils'
 
 export const createBranch = async () => {
+  log(Colors.FgGreen, 'Select branch name template:')
+  const { value: template } = await cliSelect(getCliSelectConfig(BRANCH_NAME_TEMPLATES))
+  console.log()
+
   log(Colors.FgBlue, 'Configure your branch name.', true)
   log(Colors.FgGreen, 'Select branch type:')
 
   const { value: branchType } = await cliSelect(getCliSelectConfig(BRANCH_TYPES))
+
+  let lastName
+  if (template === 'ccaLms') lastName = ps(`${Colors.FgGreen} last name: `)
 
   log(Colors.FgGreen, 'Select your project alias')
 
@@ -21,23 +28,22 @@ export const createBranch = async () => {
   const branchName = ps(`${Colors.FgGreen} branch name: `)
   console.log()
 
-  const branchPrefix = `${branchType.trim()}/${project
-    .split(' ')[1]
-    .trim()
-    .replace('[', '')
-    .replace(']', '')}`
+  const projectAlias = `${project.split(' ')[1].trim().replace('[', '').replace(']', '')}`
   const startingDash = `${taskNumber ? '-' : ''}`
-  const extendedBranchName = `${startingDash}${taskNumber.trim()}-${branchName
-    .split(' ')
-    .join('-')}`
-  const extendedBranchNameLastDashProtected =
-    extendedBranchName.slice(-1) === '-' ? extendedBranchName.slice(0, -1) : extendedBranchName
-  const mappedBranchName = `${branchPrefix}${extendedBranchNameLastDashProtected}`
+  const issueID = `${startingDash}${taskNumber.trim()}`
 
-  log(Colors.FgBlue, `Branch with name "${mappedBranchName}" will be created. Do you agree?`)
+  const branch = BRANCH_TEMPLATES[template as keyof typeof BRANCH_TEMPLATES]?.({
+    type: branchType,
+    projectAlias: projectAlias,
+    issueID,
+    branchName,
+    lastName,
+  })
+
+  log(Colors.FgBlue, `Branch with name "${branch}" will be created. Do you agree?`)
   const { value: agreed } = await cliSelect(
     getCliSelectConfig({ type: 'agree', values: ['yes', 'no'] })
   )
 
-  if (agreed === 'yes') exec(`git checkout -b ${mappedBranchName}`)
+  if (agreed === 'yes') exec(`git checkout -b ${branch}`)
 }
