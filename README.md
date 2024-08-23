@@ -8,6 +8,13 @@
 pnpm install
 ```
 
+> Build the project
+
+```
+pnpm build
+```
+
+
 > create alias in your .zshrc
 
 ```
